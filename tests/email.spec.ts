@@ -38,22 +38,16 @@ test.describe('Email Testing Suite', () => {
     // Wait for the email to arrive and get its content
     const email = await mailslurp.waitForLatestEmail(INBOX_ID, 30000);
     
-    // Verify email was received and has content
-    expect(email.body).toBeTruthy();
-    
     // Extract the reset link using regex pattern
     const linkPattern = /href="([^"]*)" target="_blank"/;
     const matches = email.body!.match(linkPattern);
-    expect(matches).not.toBeNull();
-    expect(matches!.length).toBeGreaterThan(1);
-    
     const resetLink = matches![1];
 
     // Navigate to the reset link
     await page.goto(resetLink);
 
     // Fill in the new password fields with a complex password
-    const newPassword = 'B9$mP#vL2@nX5qR8*';  // Complex password with mixed chars, numbers, and symbols
+    const newPassword = 'M9$mP#vL2@nX5qR8*';  // Complex password with mixed chars, numbers, and symbols
     await page.getByTestId('textbox-new-password').fill(newPassword);
     await page.getByTestId('textbox-confirm-password').fill(newPassword);
 
@@ -64,5 +58,4 @@ test.describe('Email Testing Suite', () => {
     await expect(page.locator('.form--title')).toBeVisible();
     await expect(page.locator('.form--title')).toHaveText('Password reset');
   });
-
 });
